@@ -1,0 +1,17 @@
+#KAFKA commands
+
+1> docker compose up d
+2> docker compose down
+
+#spring boot application commands
+
+1> mvn clean install -DskipTests
+
+2> docker build -f Dockerfile -t url-feeder-service .
+
+3> docker run --name url-feeder-service -p 8085:8085 --network bridge url-feeder-service
+
+
+MYSQl
+
+1> docker run --name url-project -e MYSQL_ROOT_PASSWORD=root -d -p 127.0.0.1:3307:3306 mysql
