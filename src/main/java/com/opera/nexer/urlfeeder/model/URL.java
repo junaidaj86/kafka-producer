@@ -3,6 +3,7 @@ package com.opera.nexer.urlfeeder.model;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.Column;
@@ -16,6 +17,7 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 @Data
 @Table(name="url")
+@ToString
 public class URL {
 
     @Id
