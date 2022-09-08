@@ -1,8 +1,7 @@
 package com.opera.nexer.urlfeeder.controller;
 
-import com.nexer.opera.schema.avro.Event;
-import com.opera.nexer.urlfeeder.common.Constants;
-import com.opera.nexer.urlfeeder.model.URL;
+import com.nexer.opera.schema.avro.CloudEventData;
+import com.opera.nexer.urlfeeder.model.CloudEventsEntity;
 import com.opera.nexer.urlfeeder.service.URLService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,8 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.sql.Timestamp;
 import java.util.UUID;
+
 
 @RestController
 @RequestMapping("/api/v1")
@@ -28,10 +27,8 @@ public class URLFeeder {
     }
 
     @PostMapping("/submit")
-    public ResponseEntity<Void> submitUrl(@RequestBody Event payload){
-//        url.setId(Constants.URL_UUID_PREFIX +UUID.randomUUID().toString());
-//        url.setCreatedDate(new Timestamp(System.currentTimeMillis()));
-        LOGGER.info("URL received" + payload);
+    public ResponseEntity<Void> submitUrl(@RequestBody CloudEventData payload){
+        LOGGER.info("CloudEventsEntity received" + payload);
         urlService.save(payload);
         return ResponseEntity.ok().build();
     }

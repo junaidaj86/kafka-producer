@@ -4,13 +4,10 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import org.springframework.data.annotation.CreatedDate;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import java.sql.Timestamp;
 
 @Entity
 @AllArgsConstructor
@@ -18,7 +15,7 @@ import java.sql.Timestamp;
 @Data
 @Table(name="url")
 @ToString
-public class URL {
+public class CloudEventsEntity {
 
     @Id
     private String id;
@@ -26,8 +23,9 @@ public class URL {
 
     private String url;
 
-    @Column(name="created_date")
-    private Timestamp createdDate;
+    private String description;
+
+    private String name;
 
 
 }

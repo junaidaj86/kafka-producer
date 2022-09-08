@@ -1,9 +1,8 @@
 package com.opera.nexer.urlfeeder.service;
 
-import com.nexer.opera.schema.avro.Event;
-import com.opera.nexer.urlfeeder.controller.URLFeeder;
+import com.nexer.opera.schema.avro.CloudEventData;
 import com.opera.nexer.urlfeeder.dao.URLRepository;
-import com.opera.nexer.urlfeeder.model.URL;
+import com.opera.nexer.urlfeeder.model.CloudEventsEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,18 +29,27 @@ public class URLService {
     @Autowired
     private KafkaService kafkaService;
 
-    public void save(Event payload){
+    public void save(CloudEventData payload){
         try{
+            LOGGER.info("=================================================================================");
 
+
+            payload.setID("1234");
+            LOGGER.info("data="+ payload);
+            LOGGER.info("======================================3===========================================");
             Optional<String> topic = getTopicByPath((String) payload.getUrl());
             if(topic.isEmpty()){
-                LOGGER.warn("Content typenot found");
+                LOGGER.warn("Content type not found");
             }else{
-                kafkaService.send(topic.get(), "data", payload);
-                URL url = new URL();
-                url.setUrl((String) payload.getUrl());
-                url.setId("html_"+ UUID.randomUUID());
-                urlRepository.save(url);
+
+                CloudEventsEntity cloudEventsEntity = new CloudEventsEntity();
+                cloudEventsEntity.setUrl(String.valueOf(payload.getUrl()));
+                cloudEventsEntity.setId(String.valueOf(UUID.randomUUID()));
+                cloudEventsEntity.setName(String.valueOf(payload.getName()));
+                cloudEventsEntity.setDescription(String.valueOf(payload.getDescription()));
+                LOGGER.info("================================2================================================="+ topic.get());
+                kafkaService.send(topic.get(), payload);
+                urlRepository.save(cloudEventsEntity);
             }
 
         }catch (IOException e){
@@ -56,7 +64,7 @@ public class URLService {
         urlConnection.setRequestMethod("HEAD");
         urlConnection.connect();
         String rawContectType =  urlConnection.getContentType();
-        LOGGER.info("URL: {} has content type: {}", path, rawContectType);
+        LOGGER.info("CloudEventsEntity: {} has content type: {}", path, rawContectType);
         String contentType = rawContectType.split(";")[0];
 
         LOGGER.info("key: {} ", contentType);

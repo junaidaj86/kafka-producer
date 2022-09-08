@@ -1,5 +1,5 @@
 {
-        "name": "Event",
+        "name": "CloudEventData",
         "namespace": "com.nexer.opera.schema.avro",
         "type": "record",
         "doc": "Avro Schema for Event",
@@ -9,13 +9,13 @@
         }, {
         "name" : "description",
         "type" : "string"
-        }, {
-        "name" : "createdOn",
-        "type" : "int",
-        "logicalType": "timestamp-millis"
         },
         {
         "name" : "url",
+        "type" : "string"
+        },
+        {
+        "name" : "ID",
         "type" : "string"
         }
         ]
