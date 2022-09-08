@@ -1,5 +1,6 @@
 package com.opera.nexer.urlfeeder.service;
 
+import com.nexer.opera.schema.avro.Event;
 import com.opera.nexer.urlfeeder.controller.URLFeeder;
 import com.opera.nexer.urlfeeder.dao.URLRepository;
 import com.opera.nexer.urlfeeder.model.URL;
@@ -13,6 +14,7 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class URLService {
@@ -28,14 +30,17 @@ public class URLService {
     @Autowired
     private KafkaService kafkaService;
 
-    public void save(URL url){
+    public void save(Event payload){
         try{
 
-            Optional<String> topic = getTopicByPath(url.getUrl());
+            Optional<String> topic = getTopicByPath((String) payload.getUrl());
             if(topic.isEmpty()){
                 LOGGER.warn("Content typenot found");
             }else{
-                kafkaService.send(topic.get(), url.getUrl());
+                kafkaService.send(topic.get(), "data", payload);
+                URL url = new URL();
+                url.setUrl((String) payload.getUrl());
+                url.setId("html_"+ UUID.randomUUID());
                 urlRepository.save(url);
             }
 

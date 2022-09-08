@@ -1,5 +1,6 @@
 package com.opera.nexer.urlfeeder.controller;
 
+import com.nexer.opera.schema.avro.Event;
 import com.opera.nexer.urlfeeder.common.Constants;
 import com.opera.nexer.urlfeeder.model.URL;
 import com.opera.nexer.urlfeeder.service.URLService;
@@ -27,11 +28,11 @@ public class URLFeeder {
     }
 
     @PostMapping("/submit")
-    public ResponseEntity<Void> submitUrl(@RequestBody URL url){
-        url.setId(Constants.URL_UUID_PREFIX +UUID.randomUUID().toString());
-        url.setCreatedDate(new Timestamp(System.currentTimeMillis()));
-        LOGGER.info("URL received" + url);
-        urlService.save(url);
+    public ResponseEntity<Void> submitUrl(@RequestBody Event payload){
+//        url.setId(Constants.URL_UUID_PREFIX +UUID.randomUUID().toString());
+//        url.setCreatedDate(new Timestamp(System.currentTimeMillis()));
+        LOGGER.info("URL received" + payload);
+        urlService.save(payload);
         return ResponseEntity.ok().build();
     }
 

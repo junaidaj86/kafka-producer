@@ -1,5 +1,24 @@
 version: "3"
 services:
+  postgres:
+    image: postgres
+    network_mode: bridge
+    container_name: postgres
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: apicurio-registry
+      POSTGRES_PASSWORD: password
+  registry:
+    image: apicurio/apicurio-registry-jpa
+    network_mode: bridge
+    container_name: registry
+    ports:
+      - 8081:8080
+    environment:
+      QUARKUS_DATASOURCE_URL: 'jdbc:postgresql://172.17.0.1:5432/apicurio-registry'
+      QUARKUS_DATASOURCE_USERNAME: apicurio-registry
+      QUARKUS_DATASOURCE_PASSWORD: password
   zookeeper:
     image: zookeeper
     network_mode: bridge
